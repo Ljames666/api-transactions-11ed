@@ -53,6 +53,14 @@ export class DBMock {
     addTransaction(transaction: ITransaction): void {
         this.transactionsList.push(transaction);
     }
+    findTransactionsByUser(user_id: string) {
+        const list = this.transactionsList.filter((tras) => tras.user_id === user_id);
+        return list;
+    }
+
+    findOneTransactionByUser(transId: string) {
+        return this.transactionsList.find((trans) => trans.id === transId);
+    }
 }
 
 export const database = new DBMock();
