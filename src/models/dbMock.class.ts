@@ -61,6 +61,41 @@ export class DBMock {
     findOneTransactionByUser(transId: string) {
         return this.transactionsList.find((trans) => trans.id === transId);
     }
+
+    updateTransaction(data: { trans_id: string; title: any; type: any; value: any }) {
+        const index = this.transactionsList.findIndex((trans) => trans.id === data.trans_id);
+
+        if (index < 0) {
+            return null;
+        }
+
+        const newTransaction = {
+            id: this.transactionsList[index].id,
+            title: data.title ? data.title : this.transactionsList[index].title,
+            type: data.type ? data.type : this.transactionsList[index].type,
+            user_id: this.transactionsList[index].user_id,
+            value: data.value ? data.value : this.transactionsList[index].value,
+        };
+
+        this.transactionsList.splice(index, 1, newTransaction);
+        return {
+            newTransaction,
+            allTransactions: this.transactionsList.filter(
+                (t) => t.user_id === this.transactionsList[index].user_id
+            ),
+        };
+    }
+
+    deleteOneTransaction(trans_id: string) {
+        const transaction = this.transactionsList.findIndex((t) => t.id === trans_id);
+        if (transaction < 0) {
+            return null;
+        }
+        const removedTransaction = this.transactionsList[transaction];
+        this.transactionsList.splice(transaction, 1);
+
+        return { removed: removedTransaction, data: this.transactionsList };
+    }
 }
 
 export const database = new DBMock();

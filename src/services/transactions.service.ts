@@ -24,4 +24,18 @@ export class TransactionService {
         const result = this.database.findOneTransactionByUser(transId);
         return result;
     }
+
+    updateTrasanction_execute(data: { trans_id: string; title: any; type: any; value: any }) {
+        const result = this.database.updateTransaction(data);
+        return result;
+    }
+
+    deleteOneTrasanction_execute(trans_id: string) {
+        const result = this.database.deleteOneTransaction(trans_id);
+        if (!result) {
+            throw new Error(`Transação de id ${trans_id} não existe.`);
+        }
+
+        return result;
+    }
 }
